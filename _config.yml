@@ -1,0 +1,6 @@
+theme: jekyll-theme-minimal
+title: AI Inline Learning
+description: >
+  A novel pattern for persistent AI agent learning through inline code comments.
+  Reduces repeated AI coding errors by 60%+ with zero infrastructure.
+show_downloads: true

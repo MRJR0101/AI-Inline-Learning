@@ -1,0 +1,43 @@
+session_date,project,ai_tool,error_type,occurred,description
+2024-10-08,LinkTools,Claude,NaN propagation,True,price * quantity silently produced NaN totals
+2024-10-09,LinkTools,Claude,NaN propagation,True,Same issue - no warning in place yet
+2024-10-10,LinkTools,Claude,NaN propagation,True,Third occurrence - added inline warning after this
+2024-10-11,LinkTools,Claude,NaN propagation,False,Inline warning prevented recurrence
+2024-10-12,LinkTools,Claude,NaN propagation,False,Inline warning prevented recurrence
+2024-10-15,LinkTools,Claude,encoding_write,True,open() without encoding crashed on non-ASCII URLs
+2024-10-16,LinkTools,Claude,encoding_write,False,Inline warning in place - no recurrence
+2024-10-18,UltimateScraper,Claude,timeout,True,requests.get() hung 25 minutes on dead server
+2024-10-19,UltimateScraper,Claude,timeout,True,Same issue in different scraper module
+2024-10-20,UltimateScraper,Claude,timeout,False,Inline warning added at requests.get() line
+2024-10-21,UltimateScraper,Claude,timeout,False,Warning applied to new scraper automatically
+2024-10-25,UltimateScraper,Claude,user_agent_block,True,Default UA rejected by target site
+2024-10-26,UltimateScraper,Claude,user_agent_block,True,Second scraper module also missing UA
+2024-10-27,UltimateScraper,Claude,user_agent_block,False,HEADERS constant with inline warning prevents
+2024-10-28,UltimateScraper,Claude,user_agent_block,False,New scraper reads HEADERS warning correctly
+2024-11-03,UltimateScraper,Claude,rate_limit_ban,True,IP banned after 500 requests in 2 minutes
+2024-11-04,UltimateScraper,Claude,rate_limit_ban,False,Inline warning added to batch loop
+2024-11-05,UltimateScraper,Claude,rate_limit_ban,False,Warning prevents aggressive scraping
+2024-11-10,UltimateScraper,Claude,None_in_links,True,a.get('href') returned None values in list
+2024-11-11,UltimateScraper,Claude,None_in_links,True,Different scraper same mistake
+2024-11-12,UltimateScraper,Claude,None_in_links,False,Inline filter warning in place
+2024-11-14,LinkTools,Claude,None_in_links,False,Warning carried over from UltimateScraper
+2024-11-20,SEODatabase,Claude,encoding_read,True,pd.read_csv crashed on Excel export file
+2024-11-21,SEODatabase,Claude,encoding_read,True,Different CSV same issue
+2024-11-22,SEODatabase,Claude,encoding_read,False,Try/except with latin-1 fallback + inline warning
+2024-11-25,SEODatabase,Claude,encoding_read,False,Warning prevents encoding assumption
+2024-12-01,SEODatabase,Claude,column_validation,True,KeyError when source had different column names
+2024-12-02,SEODatabase,Claude,column_validation,False,Required columns check + inline warning added
+2024-12-05,SEODatabase,Claude,date_format,True,to_datetime crashed on European date format
+2024-12-06,SEODatabase,Claude,date_format,False,errors='coerce' + inline warning added
+2024-12-10,PyToolbelt,Claude,main_guard,True,Code ran on import due to missing __main__ guard
+2024-12-11,PyToolbelt,Claude,main_guard,False,Guard added with inline warning
+2024-12-15,PyToolbelt,Claude,encoding_write,False,Warning from LinkTools applied automatically
+2024-12-26,PyToolbelt,Claude,unicode_powershell,True,Unicode chars caused "missing terminator" error
+2024-12-26,PyToolbelt,Claude,unicode_powershell,True,Same error second time same session
+2024-12-26,PyToolbelt,Claude,unicode_powershell,True,Third time same session - inline warning added
+2024-12-27,PyToolbelt,Claude,unicode_powershell,False,Warning prevents Unicode in new PS scripts
+2024-12-28,PyToolbelt,Claude,unicode_powershell,False,Warning prevents Unicode
+2024-12-29,PyToolbelt,Claude,unicode_powershell,False,Warning prevents Unicode
+2025-01-03,SEODatabase,Claude,NaN_propagation,False,Warning from LinkTools applied automatically
+2025-01-05,UltimateScraper,Claude,timeout,False,Inline warning still active and effective
+2025-01-08,UltimateScraper,Claude,rate_limit_ban,False,Inline warning still active and effective
