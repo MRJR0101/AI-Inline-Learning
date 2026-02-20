@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Inline Learning</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.7;
+    }
+
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-bottom: 1px solid #30363d;
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #1f6feb22;
+      border: 1px solid #1f6feb66;
+      color: #58a6ff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #e6edf3, #58a6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #8b949e;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    .btn-primary {
+      background: #1f6feb;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+    }
+
+    /* STATS BAR */
+    .stats {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #58a6ff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* MAIN CONTENT */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    .section {
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #58a6ff;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #e6edf3;
+    }
+
+    p {
+      color: #8b949e;
+      margin-bottom: 16px;
+    }
+
+    /* CODE BLOCKS */
+    .code-block {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+
+    .code-header {
+      background: #21262d;
+      border-bottom: 1px solid #30363d;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .code-dot.red { background: #ff5f57; }
+    .code-dot.yellow { background: #febc2e; }
+    .code-dot.green { background: #28c840; }
+
+    .code-filename {
+      font-size: 12px;
+      color: #8b949e;
+      margin-left: 6px;
+    }
+
+    .code-body {
+      padding: 20px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .c-comment { color: #6e7681; }
+    .c-keyword { color: #ff7b72; }
+    .c-string { color: #a5d6ff; }
+    .c-function { color: #d2a8ff; }
+    .c-highlight { color: #ffa657; }
+    .c-green { color: #3fb950; }
+
+    /* BEFORE/AFTER */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 640px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    .compare-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .compare-header {
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .compare-header.before {
+      background: #3d1a1a;
+      border-bottom: 1px solid #f851491a;
+      color: #f85149;
+    }
+
+    .compare-header.after {
+      background: #1a3d1a;
+      border-bottom: 1px solid #3fb9501a;
+      color: #3fb950;
+    }
+
+    .compare-body {
+      padding: 16px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: #58a6ff;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: #8b949e;
+      margin: 0;
+    }
+
+    /* STEPS */
+    .steps {
+      counter-reset: steps;
+      margin: 24px 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 28px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: #1f6feb22;
+      border: 1px solid #1f6feb66;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #58a6ff;
+    }
+
+    .step-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* RESOURCES */
+    .resources {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 14px 16px;
+      color: #e6edf3;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s;
+    }
+
+    .resource-link:hover {
+      border-color: #58a6ff;
+      text-decoration: none;
+    }
+
+    .resource-icon {
+      font-size: 1.1rem;
+    }
+
+    /* ABOUT */
+    .about-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 540px) {
+      .about-card { flex-direction: column; }
+    }
+
+    .about-avatar {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #1f6feb, #388bfd);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .about-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e6edf3;
+      margin-bottom: 4px;
+    }
+
+    .about-sub {
+      font-size: 13px;
+      color: #58a6ff;
+      margin-bottom: 12px;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .about-links a {
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">Open Source Innovation</div>
+  <h1>AI Inline Learning</h1>
+  <p>A novel pattern that teaches AI agents to avoid mistakes through inline code comments. No infrastructure. No setup. Just smarter AI.</p>
+  <div class="hero-buttons">
+    <a href="https://github.com/MRJR0101/AI-Inline-Learning" class="btn btn-primary">View on GitHub</a>
+    <a href="#quickstart" class="btn btn-secondary">Quick Start</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-value">60%+</div>
+    <div class="stat-label">Error Reduction</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Infrastructure Needed</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">4</div>
+    <div class="stat-label">Languages Covered</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">56+</div>
+    <div class="stat-label">Projects Using Pattern</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- PROBLEM -->
+  <div class="section">
+    <div class="section-label">The Problem</div>
+    <h2>AI assistants forget everything between sessions</h2>
+    <p>Claude, ChatGPT, and GitHub Copilot make the same mistakes repeatedly. Every new session starts from zero. Traditional solutions - external memory databases, complex protocols, API integrations - require significant infrastructure to set up and maintain.</p>
+    <p>There had to be a simpler way.</p>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="section">
+    <div class="section-label">The Discovery</div>
+    <h2>Put the warning where the mistake happened</h2>
+    <p>In December 2024, after watching an AI make the same Unicode encoding error three times in one session, the fix became obvious: embed the lesson directly in the code at the exact line where the mistake occurred.</p>
+    <p>Future AI sessions read the codebase, see the warning, and avoid the mistake automatically. The code itself becomes the memory.</p>
+
+    <div class="compare">
+      <div class="compare-card">
+        <div class="compare-header before">BEFORE - AI makes same mistake repeatedly</div>
+        <div class="compare-body">
+          <span class="c-comment"># Generate output</span><br>
+          output = <span class="c-string">"report&#x2192;summary&#x2713;.txt"</span><br>
+          <span class="c-keyword">with</span> <span class="c-function">open</span>(output) <span class="c-keyword">as</span> f:<br>
+          &nbsp;&nbsp;f.<span class="c-function">write</span>(data)<br>
+          <br>
+          <span class="c-comment"># ERROR: UnicodeEncodeError</span><br>
+          <span class="c-comment"># Happened again. Third time today.</span>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-header after">AFTER - AI learns from inline warning</div>
+        <div class="compare-body">
+          <span class="c-highlight"># HEY CLAUDE: Unicode disaster!</span><br>
+          <span class="c-highlight"># MISTAKE: Used arrow chars in filename</span><br>
+          <span class="c-highlight"># LESSON: Windows breaks on Unicode paths</span><br>
+          <span class="c-highlight"># RULE: ASCII-only filenames. Always.</span><br>
+          output = <span class="c-string">"report-summary-OK.txt"</span><br>
+          <span class="c-keyword">with</span> <span class="c-function">open</span>(output) <span class="c-keyword">as</span> f:<br>
+          &nbsp;&nbsp;f.<span class="c-function">write</span>(data)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PATTERN -->
+  <div class="section">
+    <div class="section-label">The Pattern</div>
+    <h2>Four lines. Any language. Instant results.</h2>
+    <p>Every inline learning comment follows the same structure:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-filename">pattern_format.py</span>
+      </div>
+      <div class="code-body">
+        <span class="c-highlight"># HEY [AI_NAME]:</span> <span class="c-comment">Attention grabber - make it memorable</span><br>
+        <span class="c-highlight"># MISTAKE:</span> <span class="c-comment">Specific error that occurred, with date</span><br>
+        <span class="c-highlight"># LESSON:</span> <span class="c-comment">Root cause - why did it happen</span><br>
+        <span class="c-highlight"># RULE:</span> <span class="c-comment">Actionable rule - exactly what to do instead</span><br>
+        <span class="c-highlight"># CONTEXT:</span> <span class="c-comment">Optional - when or where this applies</span>
+      </div>
+    </div>
+
+    <p>Place it at the exact line where the mistake would occur. Not in a README. Not in a log file. Right where the AI will be reading when it makes the decision.</p>
+  </div>
+
+  <!-- WHAT MAKES IT DIFFERENT -->
+  <div class="section">
+    <div class="section-label">Why It Works</div>
+    <h2>Simple beats complex</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">&#x1F4CD;</div>
+        <h3>Contextual Placement</h3>
+        <p>Warning lives at the exact decision point. The AI cannot miss it because it reads the surrounding code naturally.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4E1;</div>
+        <h3>Agent-to-Agent Learning</h3>
+        <p>One AI session writes the warning. Every future session - any AI tool - reads and learns from it automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4C2;</div>
+        <h3>Zero Infrastructure</h3>
+        <p>No database. No API. No external memory system. The codebase is the memory - it goes wherever the code goes.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F50D;</div>
+        <h3>Human Readable</h3>
+        <p>Developers benefit too. The inline warnings document real failures at the exact spot where they matter most.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK START -->
+  <div class="section" id="quickstart">
+    <div class="section-label">Quick Start</div>
+    <h2>Up and running in three steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Let your AI make a mistake</h3>
+          <p>When your AI assistant makes the same error twice, that is your trigger. Do not fix it and move on.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Have it document the lesson inline</h3>
+          <p>Tell your AI: "Add an inline learning comment at the line where you made that mistake." It will write the HEY/MISTAKE/LESSON/RULE comment and place it correctly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Watch the error disappear</h3>
+          <p>Start a new session. Open the same file. The AI reads the warning and avoids the mistake without any prompting from you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section">
+    <div class="section-label">Resources</div>
+    <h2>Everything you need</h2>
+    <div class="resources">
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/tree/main/examples" class="resource-link">
+        <span class="resource-icon">&#x1F4C4;</span> Examples
+      </a>
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/tree/main/patterns" class="resource-link">
+        <span class="resource-icon">&#x1F9E9;</span> Pattern Library
+      </a>
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/tree/main/templates" class="resource-link">
+        <span class="resource-icon">&#x1F4CB;</span> Templates
+      </a>
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/blob/main/docs/METHODOLOGY.md" class="resource-link">
+        <span class="resource-icon">&#x1F4D6;</span> Methodology
+      </a>
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/blob/main/docs/RESEARCH.md" class="resource-link">
+        <span class="resource-icon">&#x1F52C;</span> Research
+      </a>
+      <a href="https://github.com/MRJR0101/AI-Inline-Learning/blob/main/CONTRIBUTING.md" class="resource-link">
+        <span class="resource-icon">&#x1F91D;</span> Contribute
+      </a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-label">About</div>
+    <h2>The origin story</h2>
+    <p>This pattern was not the result of academic research or a planned experiment. It came from frustration - watching an AI make the same Unicode encoding mistake three times in a single afternoon and asking: "Why can't the warning just live where the mistake happened?"</p>
+    <p>After validating the idea against 30+ academic papers on AI memory systems and confirming no prior art existed for inline comments as the primary learning mechanism, the pattern was published openly in December 2024.</p>
+
+    <div class="about-card" style="margin-top: 24px;">
+      <div class="about-avatar">MR</div>
+      <div class="about-content">
+        <h3>Michael Rawls Jr.</h3>
+        <div class="about-sub">Python Developer - Houston, TX</div>
+        <p style="font-size: 14px; margin: 0;">Self-taught developer with 56+ production automation tools. CompTIA A+ and Network+ certified. Pursuing A.A.S. in Cybersecurity at Alvin Community College.</p>
+        <div class="about-links">
+          <a href="https://github.com/MRJR0101">GitHub</a>
+          <a href="https://linkedin.com/in/michael-rawls-jr">LinkedIn</a>
+          <a href="mailto:rawlsjrm@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  AI Inline Learning - Discovered December 2024 by Michael Rawls Jr., Houston, Texas.<br>
+  MIT License - Free to use, share, and build upon.
+</footer>
+
+</body>
+</html>
