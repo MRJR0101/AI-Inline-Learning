@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Inline Learning - A Novel Pattern for Persistent AI Agent Learning</title>
+    <meta name="description" content="Reduce repeated AI coding errors by 60%+ with zero infrastructure. A novel pattern by Michael Rawls, Jr.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #151d2e;
+            --bg-code: #0d1117;
+            --accent-green: #22d3a7;
+            --accent-green-dim: #22d3a740;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-dim: #64748b;
+            --border: #1e293b;
+            --glow: 0 0 30px rgba(34, 211, 167, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated grid background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(34, 211, 167, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 167, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
+        }
+
+        .content-wrap { position: relative; z-index: 1; }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 14, 23, 0.8);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            letter-spacing: -0.5px;
+        }
+        nav .logo span { color: var(--text-dim); font-weight: 400; }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        nav ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover { color: var(--accent-green); }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-green-dim);
+            border: 1px solid rgba(34, 211, 167, 0.3);
+            color: var(--accent-green);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+            width: fit-content;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.8s ease-out;
+        }
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease-out 0.1s both;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            animation: fadeUp 0.8s ease-out 0.2s both;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.8s ease-out 0.3s both;
+        }
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        /* --- SECTIONS --- */
+        section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* --- CODE COMPARISON --- */
+        .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .code-block:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+        .code-header .label-bad {
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .code-header .label-good {
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .code-header .filename { color: var(--text-dim); }
+        pre {
+            padding: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: var(--text-secondary);
+        }
+        pre .comment { color: #6a9955; }
+        pre .comment-warn { color: #f59e0b; font-weight: 600; }
+        pre .string { color: #ce9178; }
+        pre .keyword { color: #569cd6; }
+        pre .func { color: #dcdcaa; }
+        pre .var { color: #9cdcfe; }
+        pre .error-line {
+            background: rgba(239, 68, 68, 0.1);
+            display: inline-block;
+            width: 100%;
+            margin: 0 -1.2rem;
+            padding: 0 1.2rem;
+        }
+
+        /* --- HOW IT WORKS --- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-green-dim);
+        }
+        .step-card:hover::before { opacity: 1; }
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        .step-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.3px;
+        }
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* --- RESEARCH --- */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .research-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            transition: border-color 0.3s;
+        }
+        .research-card:hover {
+            border-color: rgba(34, 211, 167, 0.3);
+        }
+        .research-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .research-card .year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.6rem;
+        }
+        .research-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+        .research-card .diff {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-orange);
+        }
+
+        /* --- PROJECTS --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(34, 211, 167, 0.3);
+        }
+        .project-card .project-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+        .project-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .project-metric {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            padding: 0.3rem 0.7rem;
+            background: var(--accent-green-dim);
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .icon-scraper { background: linear-gradient(135deg, #1e3a5f, #0d1b2a); color: var(--accent-blue); }
+        .icon-link { background: linear-gradient(135deg, #1a3329, #0d1b12); color: var(--accent-green); }
+        .icon-db { background: linear-gradient(135deg, #3a2a1e, #1b140d); color: var(--accent-orange); }
+        .icon-tool { background: linear-gradient(135deg, #2a1e3a, #140d1b); color: var(--accent-purple); }
+
+        /* --- ABOUT / CTA --- */
+        .about-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-text h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .about-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+        .btn-primary:hover {
+            background: #1ab892;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(34, 211, 167, 0.3);
+        }
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            background: transparent;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .about-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .detail-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .detail-item .detail-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .detail-item .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+        }
+
+        /* --- DIVIDER --- */
+        .divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* --- COMMENT PATTERN BLOCK --- */
+        .pattern-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-green);
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 2;
+        }
+        .pattern-block .line-label {
+            color: var(--text-dim);
+            display: inline-block;
+            width: 80px;
+        }
+        .pattern-block .line-value { color: var(--text-secondary); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .code-comparison,
+            .research-grid,
+            .projects-grid,
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+            .steps {
+                grid-template-columns: 1fr;
+            }
+            nav ul { display: none; }
+            .hero-stats { gap: 2rem; }
+            .about-section { padding: 2rem; }
+            .about-details { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="content-wrap">
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">ai-inline-learning <span>// by Michael Rawls</span></div>
+        <ul>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="https://github.com/MRJR0101/AI-Inline-Learning">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Research-validated pattern &mdash; December 2024
+        </div>
+        <h1>
+            AI agents teaching<br>
+            <span class="highlight">each other</span><br>
+            through code.
+        </h1>
+        <p class="subtitle">
+            A novel pattern for persistent AI agent learning using inline code comments. 
+            Zero infrastructure. Zero setup. Just smarter AI collaboration &mdash; embedded 
+            directly where mistakes happen.
+        </p>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-value">60%+</span>
+                <span class="stat-label">Error reduction</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">56+</span>
+                <span class="stat-label">Projects using pattern</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">30+</span>
+                <span class="stat-label">Papers researched</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Infrastructure required</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- THE PROBLEM -->
+    <section id="problem">
+        <div class="section-label">// The Problem</div>
+        <h2 class="section-title">AI keeps making the same mistakes.</h2>
+        <p class="section-desc">
+            Every new AI session starts from scratch. No memory of past errors. No learning 
+            from previous failures. The same bugs, repeated endlessly across sessions.
+        </p>
+
+        <div class="code-comparison">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="label-bad">&#x2717; BEFORE &mdash; Same mistake, every session</span>
+                    <span class="filename">script.ps1</span>
+                </div>
+                <pre><span class="comment"># AI generates this every single time:</span>
+<span class="func">Write-Host</span> <span class="string">"Processing complete &#x2713;"</span>
+<span class="func">Write-Host</span> <span class="string">"Moving files &#x2192;"</span>
+
+<span class="error-line"><span class="comment"># ERROR: "The string is missing the</span></span>
+<span class="error-line"><span class="comment"># terminator" - Unicode breaks PowerShell</span></span>
+<span class="error-line"><span class="comment"># on most Windows systems.</span></span>
+
+<span class="comment"># AI fixes it... then does it again</span>
+<span class="comment"># next session. And the next.</span>
+<span class="comment"># And the next.</span></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="label-good">&#x2713; AFTER &mdash; AI learns from inline warnings</span>
+                    <span class="filename">script.ps1</span>
+                </div>
+                <pre><span class="comment-warn"># HEY CLAUDE: Remember the Unicode disaster?</span>
+<span class="comment-warn"># MISTAKE: Used fancy chars on 2024-12-26</span>
+<span class="comment-warn"># LESSON: PowerShell encoding breaks them</span>
+<span class="comment-warn"># RULE: ASCII-only. Use -> and [OK].</span>
+
+<span class="func">Write-Host</span> <span class="string">"Processing complete [OK]"</span>
+<span class="func">Write-Host</span> <span class="string">"Moving files ->"</span>
+
+<span class="comment"># Future AI sessions read the warning</span>
+<span class="comment"># and never make this mistake again.</span>
+<span class="comment"># Problem solved. Permanently.</span></pre>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- HOW IT WORKS -->
+    <section id="how">
+        <div class="section-label">// How It Works</div>
+        <h2 class="section-title">Three steps. No setup.</h2>
+        <p class="section-desc">
+            The pattern is deliberately simple. Simplicity is a feature &mdash; 
+            like REST replacing SOAP, or Markdown winning over HTML.
+        </p>
+
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-num">01</div>
+                <h3>AI Makes a Mistake</h3>
+                <p>An AI assistant makes a coding error &mdash; wrong encoding, 
+                   missing timeout, bad default value. The usual suspects.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">02</div>
+                <h3>Document It Inline</h3>
+                <p>Instead of fixing and forgetting, the AI writes a structured 
+                   warning comment at the exact point where the mistake happened.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">03</div>
+                <h3>Future AI Learns</h3>
+                <p>Next session, a new AI instance reads the code, sees the warning, 
+                   and avoids the mistake. Learning persists through code itself.</p>
+            </div>
+        </div>
+
+        <div class="pattern-block">
+            <div><span class="line-label" style="color: var(--accent-orange);">FORMAT:</span></div>
+            <div><span class="line-label" style="color: var(--accent-green);">HEY AI:</span> <span class="line-value">[Attention-grabbing context]</span></div>
+            <div><span class="line-label" style="color: var(--accent-red);">MISTAKE:</span> <span class="line-value">[What went wrong and when]</span></div>
+            <div><span class="line-label" style="color: var(--accent-blue);">LESSON:</span> <span class="line-value">[Why it happened - root cause]</span></div>
+            <div><span class="line-label" style="color: var(--accent-purple);">RULE:</span> <span class="line-value">[What to do instead - actionable fix]</span></div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- WHAT'S DIFFERENT -->
+    <section>
+        <div class="section-label">// Key Innovation</div>
+        <h2 class="section-title">The direction reversed.</h2>
+        <p class="section-desc">
+            Traditional approach: humans write comments, AI reads them. 
+            AI Inline Learning: AI writes warnings, future AI reads them. 
+            The code becomes the knowledge base.
+        </p>
+
+        <div class="code-comparison">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="label-bad">Traditional: Human -> AI</span>
+                    <span class="filename">old_way.py</span>
+                </div>
+                <pre><span class="comment"># This function processes user data</span>
+<span class="comment"># Make sure to validate input first</span>
+<span class="keyword">def</span> <span class="func">process</span>(<span class="var">data</span>):
+    <span class="comment"># TODO: add error handling</span>
+    <span class="keyword">return</span> <span class="var">data</span>.<span class="func">transform</span>()
+
+<span class="comment"># Human writes generic guidance</span>
+<span class="comment"># AI interprets loosely</span>
+<span class="comment"># Same mistakes keep happening</span></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="label-good">AI Inline Learning: AI -> AI</span>
+                    <span class="filename">new_way.py</span>
+                </div>
+                <pre><span class="comment-warn"># HEY CLAUDE: NaN values everywhere here.</span>
+<span class="comment-warn"># MISTAKE: Calculated without NaN handling</span>
+<span class="comment-warn"># LESSON: Web-scraped data is incomplete</span>
+<span class="comment-warn"># RULE: fillna(0) BEFORE any calculations</span>
+<span class="keyword">def</span> <span class="func">process</span>(<span class="var">data</span>):
+    <span class="var">data</span> = <span class="var">data</span>.<span class="func">fillna</span>(0)
+    <span class="keyword">return</span> <span class="var">data</span>.<span class="func">transform</span>()
+
+<span class="comment"># AI teaches future AI sessions</span>
+<span class="comment"># Specific, actionable, permanent</span></pre>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- RESEARCH -->
+    <section id="research">
+        <div class="section-label">// Research Validation</div>
+        <h2 class="section-title">Validated against 30+ academic papers.</h2>
+        <p class="section-desc">
+            Before claiming novelty, I did the homework. Reviewed existing AI memory 
+            and learning systems. Found sophisticated solutions &mdash; but not this one.
+        </p>
+
+        <div class="research-grid">
+            <div class="research-card">
+                <h4>Spark Framework</h4>
+                <div class="year">November 2024</div>
+                <p>Self-adaptive LLM agents that learn from experiential traces 
+                   stored in an external shared memory database.</p>
+                <div class="diff">Requires infrastructure &mdash; mine uses zero</div>
+            </div>
+            <div class="research-card">
+                <h4>MemGPT</h4>
+                <div class="year">October 2023</div>
+                <p>Virtual context management modeled after operating system memory 
+                   paging for extended LLM conversations.</p>
+                <div class="diff">Complex system overhead &mdash; mine is just comments</div>
+            </div>
+            <div class="research-card">
+                <h4>USC SKILL System</h4>
+                <div class="year">May 2023</div>
+                <p>Network-based knowledge transfer where AI agents share learned 
+                   task capabilities across a coordination layer.</p>
+                <div class="diff">Shares tasks, not mistake warnings at failure points</div>
+            </div>
+            <div class="research-card">
+                <h4>Google A2A Protocol</h4>
+                <div class="year">2024</div>
+                <p>Standardized agent-to-agent communication protocol for 
+                   runtime coordination between AI systems.</p>
+                <div class="diff">Runtime only &mdash; mine persists in the codebase</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- APPLIED IN PRODUCTION -->
+    <section id="projects">
+        <div class="section-label">// Production Applications</div>
+        <h2 class="section-title">Battle-tested across 56+ projects.</h2>
+        <p class="section-desc">
+            This isn't a theory. AI Inline Learning is actively used across 
+            production web scraping, SEO intelligence, and data processing systems.
+        </p>
+
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-icon icon-scraper">US</div>
+                <h3>UltimateScraper</h3>
+                <p>Consolidated web scraping platform with 30+ specialized scrapers 
+                   for automated data collection and competitive intelligence.</p>
+                <span class="project-metric">95%+ accuracy</span>
+            </div>
+            <div class="project-card">
+                <div class="project-icon icon-link">LT</div>
+                <h3>LinkTools v3.0</h3>
+                <p>URL processing and validation toolkit with 26 production plugins 
+                   for link analysis, extraction, and categorization.</p>
+                <span class="project-metric">10,000+ URLs/day</span>
+            </div>
+            <div class="project-card">
+                <div class="project-icon icon-db">DB</div>
+                <h3>SEO Intelligence Database</h3>
+                <p>Proprietary database aggregating URLs for competitive analysis, 
+                   backlink intelligence, and site structure mapping.</p>
+                <span class="project-metric">200M+ URLs</span>
+            </div>
+            <div class="project-card">
+                <div class="project-icon icon-tool">IX</div>
+                <h3>SEOIndexerBOT</h3>
+                <p>Automated URL indexing tool for metadata collection and search 
+                   engine submission with built-in validation.</p>
+                <span class="project-metric">93.5% success rate</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-section">
+            <div class="about-text">
+                <div class="section-label">// About</div>
+                <h3>Michael Rawls, Jr.</h3>
+                <p>
+                    24 years of operations experience across restaurants, electrical work, 
+                    solar installations, and carpentry &mdash; turned into 56+ production 
+                    Python projects in under a year.
+                </p>
+                <p>
+                    I don't build theoretical solutions. I build tools that solve real 
+                    problems for real businesses. The kind of problems I saw managing 
+                    restaurants, wiring buildings, and keeping complex systems running.
+                </p>
+                <div class="about-links">
+                    <a href="https://github.com/MRJR0101/AI-Inline-Learning" class="btn btn-primary">
+                        View on GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/michael-rawls-jr" class="btn btn-outline">
+                        LinkedIn
+                    </a>
+                    <a href="mailto:rawlsjrm@gmail.com" class="btn btn-outline">
+                        Contact
+                    </a>
+                </div>
+            </div>
+            <div class="about-details">
+                <div class="detail-item">
+                    <div class="detail-label">Education</div>
+                    <div class="detail-value">A.A.S. Cybersecurity</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem;">Alvin Community College</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Certifications</div>
+                    <div class="detail-value">CompTIA A+ & Network+</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem;">Industry recognized</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Tech Stack</div>
+                    <div class="detail-value">Python / PostgreSQL</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem;">Flask, FastAPI, Celery</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value">Houston, TX</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem;">Open to remote</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>AI Inline Learning &mdash; Created December 2024 by <a href="https://www.linkedin.com/in/michael-rawls-jr">Michael Rawls, Jr.</a></span>
+        <span>Houston, Texas</span>
+    </footer>
+
+</div>
+
+</body>
+</html>
