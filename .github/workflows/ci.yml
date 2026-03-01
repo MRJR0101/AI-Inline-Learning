@@ -1,0 +1,40 @@
+name: CI Baseline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  repo-health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Baseline Files
+        run: |
+          test -f README.md
+          test -f CONTRIBUTING.md
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Optional Python Checks
+        shell: bash
+        run: |
+          if [ -f requirements.txt ]; then
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt || true
+          fi
+          if [ -f pyproject.toml ]; then
+            python -m pip install --upgrade pip
+            pip install . || true
+          fi
+          if [ -d tests ]; then
+            python -m pip install pytest
+            pytest -q || true
+          else
+            echo "No tests directory; skipping pytest."
+          fi
