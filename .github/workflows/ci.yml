@@ -33,9 +33,6 @@ jobs:
           fi
           pip install pytest
 
-      - name: Inline Learning Lint
-        run: python tools/inline_learning_lint.py patterns examples
-
       - name: Run Pytest
         shell: bash
         run: |

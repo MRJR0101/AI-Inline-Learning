@@ -144,9 +144,6 @@ Start by reviewing the documented comparisons and pattern examples, then apply t
 # Inspect existing inline-learning markers
 rg -n "HEY [A-Z]" patterns examples
 
-# Validate HEY/MISTAKE/LESSON/RULE blocks
-python tools/inline_learning_lint.py patterns examples
-
 # Compare a naive vs improved data-processing example
 python examples/04_data_processing/basic_pipeline.py
 python examples/04_data_processing/smart_pipeline.py
@@ -154,12 +151,11 @@ python examples/04_data_processing/smart_pipeline.py
 
 ## Options / Arguments
 
-This repository includes a lightweight utility CLI for validating inline-learning blocks.
+This repository does not require a centralized CLI. Usage is script-based and documentation-driven.
 
 | Script/Command | Arguments | Purpose |
 |---|---|---|
 | `rg -n "HEY [A-Z]" patterns examples` | Search pattern and paths | Locate inline-learning markers |
-| `python tools/inline_learning_lint.py [paths...]` | `--max-gap`, `--extensions`, `--json` | Lint marker blocks and fail on missing labels |
 | `python examples/04_data_processing/basic_pipeline.py` | None | Run baseline demo pipeline |
 | `python examples/04_data_processing/smart_pipeline.py` | None | Run improved pipeline demo |
 
