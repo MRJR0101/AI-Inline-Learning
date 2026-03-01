@@ -9,18 +9,18 @@ for giving AI agents persistent memory and cross-session learning.
 
 ## Feature Comparison Table
 
-| Feature | AI Inline Learning | Spark / Experiential Co-Learning | MemGPT | Reflexion | VOYAGER Skill Library | Aider History File |
-|---|---|---|---|---|---|---|
-| Infrastructure required | None | Vector database | External storage system | Episodic memory buffer | Skill library + retrieval | Separate history file |
-| Warning location | At exact failure line | External system | External system | Separate buffer | Separate library | Separate file |
-| Cross-session persistence | Yes (permanent in code) | Yes (database) | Yes (storage) | Limited | Yes (library) | Yes (if loaded) |
-| Multi-AI compatibility | Yes (any AI reads code) | No (system-specific) | No (system-specific) | No (session only) | No (system-specific) | Partial |
-| Setup required | Zero | Significant | Significant | Moderate | Significant | Minimal |
-| Warning direction | AI to future AI | System-managed | System-managed | AI to self | AI to system | Human-managed |
-| Travels with code | Yes (in the file) | No | No | No | No | No |
-| Readable by humans | Yes | No | No | No | Partially | Yes |
-| Works offline | Yes | No (requires DB) | No (requires storage) | Yes (single session) | No (requires library) | Yes |
-| Language agnostic | Yes | Depends on system | Depends on system | Yes | No (code-specific) | Yes |
+| Feature                   | AI Inline Learning      | Spark / Experiential Co-Learning | MemGPT                  | Reflexion              | VOYAGER Skill Library     | Aider History File    |
+| ------------------------- | ----------------------- | -------------------------------- | ----------------------- | ---------------------- | ------------------------- | --------------------- |
+| Infrastructure required   | None                    | Vector database                  | External storage system | Episodic memory buffer | Skill library + retrieval | Separate history file |
+| Warning location          | At exact failure line   | External system                  | External system         | Separate buffer        | Separate library          | Separate file         |
+| Cross-session persistence | Yes (permanent in code) | Yes (database)                   | Yes (storage)           | Limited                | Yes (library)             | Yes (if loaded)       |
+| Multi-AI compatibility    | Yes (any AI reads code) | No (system-specific)             | No (system-specific)    | No (session only)      | No (system-specific)      | Partial               |
+| Setup required            | Zero                    | Significant                      | Significant             | Moderate               | Significant               | Minimal               |
+| Warning direction         | AI to future AI         | System-managed                   | System-managed          | AI to self             | AI to system              | Human-managed         |
+| Travels with code         | Yes (in the file)       | No                               | No                      | No                     | No                        | No                    |
+| Readable by humans        | Yes                     | No                               | No                      | No                     | Partially                 | Yes                   |
+| Works offline             | Yes                     | No (requires DB)                 | No (requires storage)   | Yes (single session)   | No (requires library)     | Yes                   |
+| Language agnostic         | Yes                     | Depends on system                | Depends on system       | Yes                    | No (code-specific)        | Yes                   |
 
 ---
 

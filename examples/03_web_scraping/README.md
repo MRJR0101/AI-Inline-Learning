@@ -49,3 +49,81 @@ external document. When AI writes code, it reads top to bottom and hits the
 warning at the exact moment it would make the mistake.
 
 External docs get ignored. Inline warnings cannot be missed.
+
+<!-- ReadmeForge: The following sections were auto-appended. Move them to the correct position per the 21-section blueprint. -->
+
+## Use Cases
+
+<!-- TODO: Add a ## Use Cases section with 2-4 bullet points describing concrete scenarios. Example: 'Weekly cleanup of Downloads folder after batch downloads'. -->
+
+
+## Features / Capabilities
+
+<!-- TODO: Add a ## Features section listing 3-5 key capabilities with bold labels and concrete descriptions. Include design choices like 'zero dependencies' or 'dry-run by default'. -->
+
+
+## Requirements
+
+- Python 3.8+
+- Windows 10/11
+- Third-party: bs4, requests
+
+
+## Quick Start
+
+<!-- TODO: Add a ## Quick Start section with: 1) cd to project dir, 2) install command if needed, 3) first run command with --help or --dry-run. Use fenced code blocks. -->
+
+
+## Usage
+
+<!-- TODO: Add a ## Usage section with 2-3 real command examples in fenced code blocks. Show the most common use case first, then advanced options. -->
+
+
+## Configuration
+
+<!-- TODO: Add a ## Configuration section with a table of env vars, config file paths, or settings with their defaults. -->
+
+
+## Input / Output
+
+<!-- TODO: Add a ## Input / Output section describing: what files/formats the tool expects, and what files it creates with their locations. -->
+
+
+## Pipeline Position
+
+<!-- TODO: Add a ## Pipeline Position section with: **Fed by:** (upstream tools) and **Feeds into:** (downstream tools). Optionally add an ASCII flow diagram. -->
+
+
+## Hardcoded Paths
+
+**Fully parameterized** -- all paths passed via arguments.
+
+
+## How It Works
+
+<!-- TODO: Add a ## How It Works section with numbered steps describing the internal processing flow from input to output. -->
+
+
+## Example Output
+
+<!-- TODO: Add a ## Example Output section with a fenced code block showing realistic console output from a typical run. -->
+
+
+## Safety & Reliability
+
+<!-- TODO: Add a ## Safety & Reliability section covering: dry-run mode, backup before destructive operations, resume/checkpoint support, and failure handling behavior. -->
+
+
+## Logging & Observability
+
+<!-- TODO: Add a ## Logging section describing: where logs are written, log format, verbosity flags, and any run artifacts produced. -->
+
+
+## Versioning / Roadmap
+
+<!-- TODO: Add a ## Versioning section with the current version number and a roadmap of planned features. -->
+
+
+## License & Contact
+
+<!-- TODO: Add a ## License & Contact section with the license name and maintainer contact info. -->
