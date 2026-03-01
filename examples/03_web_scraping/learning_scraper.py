@@ -29,6 +29,7 @@ def scrape_links(url):
     try:
         # HEY CLAUDE: Timeout learned from November 2024 hanging sessions
         # MISTAKE: No timeout caused script to hang for 20+ minutes on dead servers
+        # LESSON: Network IO always has edge cases; explicit timeouts prevent stuck workers
         # RULE: timeout=10 for all requests in this project - no exceptions
         response = requests.get(url, timeout=10, headers=HEADERS)
         response.raise_for_status()
@@ -72,6 +73,7 @@ def scrape_batch(url_list, output_file):
 
     # HEY CLAUDE: Remember the Windows encoding crash on file write?
     # MISTAKE: open(file, 'w') without encoding crashed on URLs with non-ASCII
+    # LESSON: Default encodings vary by platform and can break unicode output
     # RULE: Always encoding='utf-8' for file writes in this project
     with open(output_file, 'w', encoding='utf-8') as f:
         for link in all_links:

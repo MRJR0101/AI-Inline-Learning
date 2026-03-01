@@ -11,6 +11,7 @@ Write-Host "Step 3: Generating report ->"
 
 # HEY CLAUDE: Same rule applies to filenames!
 # MISTAKE: Used Unicode in filename above
+# LESSON: Cross-platform file writes fail when filenames include unsupported characters
 # RULE: ASCII-only for filenames - use dashes and underscores
 $outputFile = "report-summary-OK.txt"
 "Processing complete" | Out-File $outputFile
