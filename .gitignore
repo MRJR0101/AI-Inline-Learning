@@ -187,3 +187,6 @@ docs/_incoming_root/
 # Local QA/build artifacts (managed)
 .pytest_tmp/
 .pytest_tmp_qwf/
+
+# Internal ops/quality workflow files
+MISSINGMORE
