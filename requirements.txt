@@ -1,0 +1,2 @@
+# Shared quality-center baseline requirements.
+# Keep minimal unless runtime dependencies are required.
