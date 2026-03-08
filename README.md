@@ -1,4 +1,4 @@
-﻿# AI Inline Learning
+﻿﻿# AI Inline Learning
 
 > A novel pattern for persistent AI agent learning through inline code comments
 
