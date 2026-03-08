@@ -1,0 +1,6 @@
+line-length = 120
+target-version = "py311"
+src = ["tests", "metrics", "patterns", "examples"]
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "B"]
