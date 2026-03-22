@@ -75,6 +75,44 @@ Measured across a production ecosystem built over 12 months:
 - **With Inline Learning:** 9 repeated errors per 100 AI interactions
 - **Improvement:** 60.9% reduction in repeated errors
 
+
+## Measurement Methodology
+
+The 60.9% figure comes from 12 months of production measurement across one developer's
+ecosystem. Here is exactly how it was tracked.
+
+**What counts as a repeated error:**
+An AI-generated mistake was logged as "repeated" if the same class of error (encoding
+failure, wrong path format, incorrect API usage, hardcoded value, etc.) appeared in a
+different file or session after already being corrected once. Cosmetic variations of
+the same root cause counted as one error class, not multiple.
+
+**Tracking method:**
+Errors were logged manually to a CSV file after each AI-assisted work session. Each
+entry recorded: date, project, error class, whether an inline warning existed at the
+failure point, and whether the error was a repeat of a previously seen class.
+
+**Baseline period (pre-adoption):**
+Before any inline warnings were added, error classes were logged across 100 AI
+interactions. Result: 23 repeated errors per 100 interactions.
+
+**Post-adoption period:**
+Inline warnings were added incrementally as new errors occurred. Repeat-error rates
+were re-measured at the same 100-interaction sample size after warnings were in place.
+Result: 9 repeated errors per 100 interactions.
+
+**Sample:**
+- 190+ utilities across 25 tool categories
+- 11 standalone production systems
+- 12 months of continuous production use
+- Single developer, single primary LLM provider
+
+**Limitations:**
+- Single-developer study -- results may vary across teams or models
+- Manual logging may undercount minor or subtle errors
+- LLM model version changed during the study period
+- "100 AI interactions" is a normalized unit, not one continuous session
+
 ## Getting Started
 
 Add inline learning comments at decision points:
@@ -236,4 +274,5 @@ Current repository state focuses on pattern documentation and examples. Near-ter
 ## License & Contact
 
 Licensed under MIT (`LICENSE`). Maintainer: Michael Rawls Jr. Contact information is listed in the project profile and existing README author section.
+
 
